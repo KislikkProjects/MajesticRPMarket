@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>MajesticRP - Мой профиль</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .profile-info h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-info p {
+            margin: 0.5rem 0;
+            opacity: 0.95;
+        }
+        
+        .profile-info i {
+            margin-right: 0.5rem;
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h3 {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1f5e3a, #2b9b6e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .orders-list {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+        
+        .orders-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn.active {
+            background: #1f5e3a;
+            color: white;
+            border-color: #1f5e3a;
+        }
+        
+        .order-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .order-item:hover {
+            background: #f9f9f9;
+            transform: translateX(5px);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .order-id {
+            font-weight: 600;
+            color: #1f5e3a;
+        }
+        
+        .order-date {
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        .order-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-delivered {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+        }
+        
+        .status-processing {
+            background: linear-gradient(135deg, #fff3cd, #ffeeba);
+            color: #856404;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .order-items {
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .order-total {
+            font-weight: 700;
+            color: #1f5e3a;
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+        
+        .empty-orders {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+        }
+        
+        .edit-profile-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .edit-profile-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .edit-modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            animation: fadeSlideUp 0.2s ease;
+        }
+        
+        .edit-modal-content h3 {
+            margin-bottom: 1.5rem;
+            color: #1f5e3a;
+        }
+        
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .profile-container {
+                padding: 1rem;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .navbar {
+                flex-direction: column;
+            }
+            
+            .navbar > div:last-child {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .nav-link, .cart-icon, .logout-btn {
+                font-size: 0.9rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Навигация -->
+        <div class="navbar">
+            <div class="logo">
+                <h1>🎮 MAJESTIC<span>RP</span> MARKET</h1>
+                <div class="badge-rp"><i class="fas fa-crown"></i> официальный магазин виртуальных товаров</div>
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="catalog.html" class="nav-link">
+                    <i class="fas fa-store"></i> Магазин
+                </a>
+                <a href="profile.html" class="nav-link active">
+                    <i class="fas fa-user"></i> Профиль
+                </a>
+                <div class="cart-icon" id="openCartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount">0</span>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="profile-container">
+            <!-- Профиль пользователя -->
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-info">
+                    <h1 id="profileUsername">Загрузка...</h1>
+                    <p><i class="fas fa-envelope"></i> <span id="profileEmail">Загрузка...</span></p>
+                    <p><i class="fas fa-calendar-alt"></i> Дата регистрации: <span id="joinDate">Загрузка...</span></p>
+                </div>
+                <div style="margin-left: auto;">
+                    <button class="edit-profile-btn" id="editProfileBtn">
+                        <i class="fas fa-edit"></i> Редактировать профиль
+                    </button>
+                </div>
+            </div>
+
+            <!-- Статистика -->
+            <div class="profile-stats">
+                <div class="stat-card">
+                    <h3><i class="fas fa-shopping-bag"></i> Всего заказов</h3>
+                    <div class="stat-value" id="totalOrders">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3><i class="fas fa-ruble-sign"></i> Всего потрачено</h3>
+                    <div class="stat-value" id="totalSpent">0 ₽</div>
+                </div>
+                <div class="stat-card">
+                    <h3><i class="fas fa-calendar-week"></i> Заказов за месяц</h3>
+                    <div class="stat-value" id="monthOrders">0</div>
+                </div>
+            </div>
+
+            <!-- История заказов -->
+            <div class="orders-list">
+                <div class="orders-header">
+                    <h2><i class="fas fa-history"></i> История заказов</h2>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">Все</button>
+                        <button class="filter-btn" data-filter="delivered">Доставленные</button>
+                        <button class="filter-btn" data-filter="processing">В обработке</button>
+                    </div>
+                </div>
+                <div id="ordersContainer">
+                    <div class="empty-orders">
+                        <i class="fas fa-spinner fa-spin"></i> Загрузка заказов...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования профиля -->
+    <div id="editProfileModal" class="edit-modal">
+        <div class="edit-modal-content">
+            <h3>Редактирование профиля</h3>
+            <form id="editProfileForm">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="editUsername" placeholder="Игровой никнейм" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="editEmail" placeholder="Email" required>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button type="submit" class="auth-btn" style="flex: 1;">Сохранить</button>
+                    <button type="button" id="closeEditModal" class="auth-btn" style="background: #999;">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модалка корзины -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-store"></i> Ваша корзина</h3>
+                <button class="close-modal" id="closeModalBtn">&times;</button>
+            </div>
+            <div id="cartItemsList" class="cart-items"></div>
+            <div id="cartTotalBlock" class="cart-total"></div>
+            <button id="checkoutBtn" class="checkout-btn"><i class="fas fa-check-double"></i> Оформить покупку</button>
+        </div>
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>
